@@ -1,0 +1,20 @@
+# Fallback .htaccess at project root (only if your host cannot set DocumentRoot to /public)
+# Preferred setup: point your VirtualHost DocumentRoot to /public and remove this file.
+
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # If the request is for /install or /install/*, route to installer
+  RewriteRule ^install($|/.*) public/index.php [L]
+
+  # Route everything else to public/index.php
+  RewriteCond %{REQUEST_URI} !^/public/
+  RewriteRule ^ public/index.php [L]
+</IfModule>
+
+# Deny direct access to sensitive files
+<Files ".env">
+  Require all denied
+</Files>
